@@ -59,8 +59,9 @@
 // export default BusList;
 
 import React, { useEffect, useState } from "react";
-import styles from "./BusList.module.css"
+import styles from "./BusList.module.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const BusList = () => {
   const [buslist, setBusList] = useState([]); // Initialize with an empty array
@@ -71,10 +72,12 @@ const BusList = () => {
     const fetchBusData = async () => {
       try {
         console.log("h1");
-        
-        const response = await axios.get("http://localhost/pu_bus.php/getbuslist");
+
+        const response = await axios.get(
+          "http://localhost/pu_bus.php/getbuslist"
+        );
         console.log("h2");
-        
+
         console.log(response.data.status);
         console.log("h3");
         setBusList(response.data.bus_list || []); // Ensure the list is always an array
@@ -92,17 +95,33 @@ const BusList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className={`${styles.centDiv}`}>
+    <div className="m-5">
       <div>
-        <button>Add</button>
+        {/* <Link to="/add">Add</Link> */}
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Bus No."
+            aria-label="Bus No."
+            aria-describedby="basic-addon2"
+          />
+          <div className="input-group-append">
+            <button className="btn btn-outline-secondary" type="button">
+              Add
+            </button>
+          </div>
+        </div>
       </div>
-      <div >
+      <div>
         <table className={`table ${styles.tableBorder}`}>
           <thead className="table-dark">
             <tr>
               <th className={`${styles.tableDesignCol1}`}>ID</th>
               <th className={`${styles.tableDesignCol2}`}>Bus No</th>
-              <th className={`${styles.tableDesignCol3}`}>Action</th>
+              <th className={`${styles.tableDesignCol3}`} colSpan="2">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -111,7 +130,16 @@ const BusList = () => {
                 <tr key={data.bus_id}>
                   <td>{data.bus_id}</td>
                   <td>{data.bus_no}</td>
-                  <td><a href="#">Delete</a></td>
+                  <td>
+                    <button class="btn btn-outline-secondary" type="button">
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-secondary" type="button">
+                      Update
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (

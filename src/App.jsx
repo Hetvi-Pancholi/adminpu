@@ -5,10 +5,10 @@ import Admin from "./pages/Admin";
 import React, { useState } from "react";
 
 function App() {
-  let [isLogin,setLogin]=useState(true);
+  let [isLogin, setLogin] = useState(false);
 
-  if(!isLogin) {
-    return(<Login setLogin={setLogin}/>)
+  if (!isLogin) {
+    return <Login setLogin={setLogin} />;
   }
   return (
     <>

@@ -30,7 +30,7 @@
 //     <div>
 //       <div>
 //         <button>Add</button>
-        
+
 //       </div>
 //       <div>
 //         <table class="table table-bordered">
@@ -74,6 +74,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import styles from "./BusList.module.css";
 
 const ShiftList = () => {
   const [shiftlist, setShiftList] = useState([]); // Initialize with an empty array
@@ -102,26 +103,52 @@ const ShiftList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <div>
-        <button>Add</button>
+    <div className="m-5">
+      <div >
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Shift Name"
+            aria-label="Shift Name"
+            aria-describedby="basic-addon2"
+          />
+          <div className="input-group-append">
+            <button className="btn btn-outline-secondary" type="button">
+              Add
+            </button>
+          </div>
+        </div>
       </div>
       <div>
-        <table className="table table-bordered">
+        <table className={`table ${styles.tableBorder}`}>
           <thead className="table-dark">
             <tr>
-              <th>ID</th>
-              <th>Shift Name</th>
-              <th>Action</th>
+              <th className={`${styles.tableDesignCol1}`}>ID</th>
+              <th className={`${styles.tableDesignCol2}`}>Shift Name</th>
+              <th className={`${styles.tableDesignCol3}`} colSpan="2">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {shiftlist.length > 0 ? (
               shiftlist.map((data) => (
-                <tr key={data.shift_id}> {/* Correct key usage */}
+                <tr key={data.shift_id}>
+                  {" "}
+                  {/* Correct key usage */}
                   <td>{data.shift_id}</td>
                   <td>{data.shift_name}</td>
-                  <td><a href="#">Delete</a></td>
+                  <td>
+                    <button class="btn btn-outline-secondary" type="button">
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-secondary" type="button">
+                      Update
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (

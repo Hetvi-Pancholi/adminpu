@@ -5,7 +5,7 @@
 //     const [driverlist, setDriverList] = useState(null);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
-  
+
 //   useEffect(() => {
 //     // Replace with your API endpoint
 //     const fetchWeatherData = async () => {
@@ -31,7 +31,7 @@
 //     <div>
 //       <div>
 //         <button>Add</button>
-        
+
 //       </div>
 //       <div>
 //         <table class="table table-bordered">
@@ -61,6 +61,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import styles from "./BusList.module.css";
 
 const DriverList = () => {
   const [driverlist, setDriverList] = useState([]); // Initialize with an empty array
@@ -89,26 +90,52 @@ const DriverList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="m-5">
       <div>
-        <button>Add</button>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Driver Name"
+            aria-label="Driver Name"
+            aria-describedby="basic-addon2"
+          />
+          <div className="input-group-append">
+            <button className="btn btn-outline-secondary" type="button">
+              Add
+            </button>
+          </div>
+        </div>
       </div>
       <div>
-        <table className="table table-bordered">
+        <table className={`table ${styles.tableBorder}`}>
           <thead className="table-dark">
             <tr>
-              <th>ID</th>
-              <th>Driver Name</th>
-              <th>Action</th>
+              <th className={`${styles.tableDesignCol1}`}>ID</th>
+              <th className={`${styles.tableDesignCol2}`}>Driver Name</th>
+              <th className={`${styles.tableDesignCol3}`} colSpan="2">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {driverlist.length > 0 ? (
               driverlist.map((data) => (
-                <tr key={data.driver_id}> {/* Correct key usage */}
+                <tr key={data.driver_id}>
+                  {" "}
+                  {/* Correct key usage */}
                   <td>{data.driver_id}</td>
                   <td>{data.driver_name}</td>
-                  <td><a href="#">Delete</a></td>
+                  <td>
+                    <button class="btn btn-outline-secondary" type="button">
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-secondary" type="button">
+                      Update
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (

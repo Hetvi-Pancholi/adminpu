@@ -43,7 +43,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-
 import Sidebar from "../components/Sidebar/Sidebar";
 import "./Admin.css";
 import BusList from "../components/list/BusList";
@@ -52,18 +51,18 @@ import ShiftList from "../components/list/ShiftList";
 import RouteList from "../components/list/RouteList";
 import Parking from "../components/list/Parking";
 import AdminList from "../components/list/AdminList";
-import App from "../App"
+import App from "../App";
 
 const Admin = () => {
   return (
-    <div className="admin" >
+    <div className="admin">
       <Sidebar />
       <Routes>
-      <Route path="/" element={<App/>} />
+        <Route path="/" element={<App />} />
         <Route path="/buslist" element={<BusList />} />
         <Route path="/driverlist" element={<DriverList />} />
         <Route path="/shiftlist" element={<ShiftList />} />
-        <Route path="/routelist" element={<RouteList/>} />
+        <Route path="/routelist" element={<RouteList />} />
         <Route path="/parking" element={<Parking />} />
         <Route path="/adminlist" element={<AdminList />} />
       </Routes>
