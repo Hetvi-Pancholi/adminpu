@@ -68,23 +68,35 @@ const DriverList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchDriverData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/pu_bus.php/getdriverlist"
-        );
-        console.log(response.data.driver_list);
-        setDriverList(response.data.driver_list || []); // Ensure it is always an array
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+  const fetchDriverData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/pu_bus.php/getdriverlist"
+      );
+      console.log(response.data.driver_list);
+      setDriverList(response.data.driver_list || []); // Ensure it is always an array
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchDriverData();
   }, []);
+
+  const remove_driver = async (driver_id) => {
+    await fetch("http://localhost/pu_bus.php/removedriverlist", {
+      method: "POST",
+      headers: {
+        Accept: "applicatiion/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ driver_id: driver_id }),
+    });
+    await fetchDriverData();
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -127,7 +139,13 @@ const DriverList = () => {
                   <td>{data.driver_id}</td>
                   <td>{data.driver_name}</td>
                   <td>
-                    <button class="btn btn-outline-secondary" type="button">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => {
+                        remove_driver(data.driver_id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>

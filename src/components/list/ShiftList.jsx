@@ -81,30 +81,40 @@ const ShiftList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchShiftData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/pu_bus.php/getshift"
-        );
-        console.log(response.data.shift_list);
-        setShiftList(response.data.shift_list || []); // Ensure it's always an array
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+  const fetchShiftData = async () => {
+    try {
+      const response = await axios.get("http://localhost/pu_bus.php/getshift");
+      console.log(response.data.shift_list);
+      setShiftList(response.data.shift_list || []); // Ensure it's always an array
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchShiftData();
   }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  const remove_shift = async (shift_id) => {
+    await fetch("http://localhost/pu_bus.php/removeshiftlist", {
+      method: "POST",
+      headers: {
+        Accept: "applicatiion/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ shift_id: shift_id }),
+    });
+    await fetchShiftData();
+  };
+
   return (
     <div className="m-5">
-      <div >
+      <div>
         <div className="input-group mb-3">
           <input
             type="text"
@@ -140,7 +150,13 @@ const ShiftList = () => {
                   <td>{data.shift_id}</td>
                   <td>{data.shift_name}</td>
                   <td>
-                    <button class="btn btn-outline-secondary" type="button">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => {
+                        remove_shift(data.shift_id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>

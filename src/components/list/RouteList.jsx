@@ -69,50 +69,62 @@ const RouteList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchRouteData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/pu_bus.php/getroutelist"
-        );
-        console.log(response.data.route_list);
-        setRouteList(response.data.route_list || []); // Ensure data is an array
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+  const fetchRouteData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/pu_bus.php/getroutelist"
+      );
+      console.log(response.data.route_list);
+      setRouteList(response.data.route_list || []); // Ensure data is an array
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchRouteData();
   }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  const remove_route = async (route_id) => {
+    await fetch("http://localhost/pu_bus.php/removeroutelist", {
+      method: "POST",
+      headers: {
+        Accept: "applicatiion/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ route_id: route_id }),
+    });
+    await fetchRouteData();
+  };
+
   return (
     <div className="m-5">
-    <div>
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Route Area No."
-          aria-label="Route Area No."
-          aria-describedby="basic-addon2"
-        />
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Route Name"
-          aria-label="Route Name"
-          aria-describedby="basic-addon2"
-        />
-        <div class="input-group-prepend ">
-          <span class="input-group-text" id="">
-            Add
-          </span>
-        </div>
+      <div>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Route Area No."
+            aria-label="Route Area No."
+            aria-describedby="basic-addon2"
+          />
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Route Name"
+            aria-label="Route Name"
+            aria-describedby="basic-addon2"
+          />
+          <div class="input-group-prepend ">
+            <span class="input-group-text" id="">
+              Add
+            </span>
+          </div>
         </div>
       </div>
       <div>
@@ -137,7 +149,13 @@ const RouteList = () => {
                   <td>{data.route_area_no}</td>
                   <td>{data.route_name}</td>
                   <td>
-                    <button class="btn btn-outline-secondary" type="button">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => {
+                        remove_route(data.route_id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>

@@ -138,26 +138,38 @@ const Parking = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchParkingData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/pu_bus.php/getparkinglist"
-        );
-        const parkingData = response.data?.parking_list || []; // Ensure the data is an array
-        setParkingList(parkingData);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+  const fetchParkingData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/pu_bus.php/getparkinglist"
+      );
+      const parkingData = response.data?.parking_list || []; // Ensure the data is an array
+      setParkingList(parkingData);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchParkingData();
   }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  const remove_parking = async (parking_id) => {
+    await fetch("http://localhost/pu_bus.php/removeparkinglist", {
+      method: "POST",
+      headers: {
+        Accept: "applicatiion/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ parking_id: parking_id }),
+    });
+    
+  };
 
   return (
     <div className="m-5">
@@ -206,7 +218,13 @@ const Parking = () => {
                   <td>{data.section}</td>
                   <td>{data.slot_no}</td>
                   <td>
-                    <button class="btn btn-outline-secondary" type="button">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => {
+                        remove_parking(data.parking_id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>

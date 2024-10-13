@@ -68,31 +68,43 @@ const BusList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchBusData = async () => {
+    try {
+      console.log("h1");
+
+      const response = await axios.get(
+        "http://localhost/pu_bus.php/getbuslist"
+      );
+      console.log("h2");
+
+      console.log(response.data.status);
+      console.log("h3");
+      setBusList(response.data.bus_list || []); // Ensure the list is always an array
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBusData = async () => {
-      try {
-        console.log("h1");
-
-        const response = await axios.get(
-          "http://localhost/pu_bus.php/getbuslist"
-        );
-        console.log("h2");
-
-        console.log(response.data.status);
-        console.log("h3");
-        setBusList(response.data.bus_list || []); // Ensure the list is always an array
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
     fetchBusData();
   }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  const remove_bus = async (bus_id) => {
+    await fetch("http://localhost/pu_bus.php/removebuslist", {
+      method: "POST",
+      headers: {
+        Accept: "applicatiion/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ bus_id: bus_id }),
+    });
+    await fetchBusData();
+  };
 
   return (
     <div className="m-5">
@@ -131,7 +143,13 @@ const BusList = () => {
                   <td>{data.bus_id}</td>
                   <td>{data.bus_no}</td>
                   <td>
-                    <button class="btn btn-outline-secondary" type="button">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => {
+                        remove_bus(data.bus_id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>
