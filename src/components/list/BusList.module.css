@@ -1,0 +1,28 @@
+.centDiv{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableDesignCol1{
+    width: 80px;
+    color: aqua;
+}
+
+.tableDesignCol2{
+    width: 400px;
+    color: aqua;
+}
+
+.tableDesignCol3{
+    width: 200px;
+    color: aqua;
+}
+
+.tableBorder{
+    border: 2px solid black;
+    border-radius: 50px;
+}

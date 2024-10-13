@@ -23,7 +23,7 @@ import profile from "../../assets/nav-profile.svg";
 import { Link } from "react-router-dom";
 import list from "../../assets/list.svg";
 
-const Navbar = () => {
+const Navbar = ({isLogin,setLogin}) => {
   return (
     <nav className="navbar bg-info">
       <div className="container-fluid ms-lg-3">
@@ -34,12 +34,25 @@ const Navbar = () => {
           <h4 className="text-light">pubus</h4>
         </a>
         <div>
-          <Link
+          {
+            !isLogin  
+            ?
+            <Link
             to="/login"
             className="btn text-white text-center fw-medium fst-normal fs-5 btn-outline-info shadow-lg m-sm-3"
           >
             LOGIN
           </Link>
+          :
+          <Link
+            to="/"
+            className="btn text-white text-center fw-medium fst-normal fs-5 btn-outline-info shadow-lg m-sm-3"
+            onClick={()=>setLogin(!isLogin)}
+          >
+            LOGOUT
+          </Link>
+          }
+         
 
           <img src={profile} alt="Bootstrap" width="70" height="60" />
         </div>

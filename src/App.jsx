@@ -5,14 +5,14 @@ import Admin from "./pages/Admin";
 import React, { useState } from "react";
 
 function App() {
-  let [isLogin,setLogin]=useState(false);
+  let [isLogin,setLogin]=useState(true);
 
   if(!isLogin) {
     return(<Login setLogin={setLogin}/>)
   }
   return (
     <>
-      <Navbar />
+      <Navbar isLogin={isLogin} setLogin={setLogin} />
       <Admin />
       <Footer />
     </>

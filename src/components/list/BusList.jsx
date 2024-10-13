@@ -59,6 +59,7 @@
 // export default BusList;
 
 import React, { useEffect, useState } from "react";
+import styles from "./BusList.module.css"
 import axios from "axios";
 
 const BusList = () => {
@@ -69,8 +70,13 @@ const BusList = () => {
   useEffect(() => {
     const fetchBusData = async () => {
       try {
+        console.log("h1");
+        
         const response = await axios.get("http://localhost/pu_bus.php/getbuslist");
-        console.log(response.data.bus_list);
+        console.log("h2");
+        
+        console.log(response.data.status);
+        console.log("h3");
         setBusList(response.data.bus_list || []); // Ensure the list is always an array
         setLoading(false);
       } catch (err) {
@@ -86,17 +92,17 @@ const BusList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className={`${styles.centDiv}`}>
       <div>
         <button>Add</button>
       </div>
-      <div>
-        <table className="table table-bordered">
+      <div >
+        <table className={`table ${styles.tableBorder}`}>
           <thead className="table-dark">
             <tr>
-              <th>ID</th>
-              <th>Bus No</th>
-              <th>Action</th>
+              <th className={`${styles.tableDesignCol1}`}>ID</th>
+              <th className={`${styles.tableDesignCol2}`}>Bus No</th>
+              <th className={`${styles.tableDesignCol3}`}>Action</th>
             </tr>
           </thead>
           <tbody>
